@@ -1,0 +1,16 @@
+{
+  "name": "monrer-blessed",
+  "version": "1.0.0",
+  "description": "Terminal UI for monrer.fr API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicolas Barthe-Dejean",
+  "license": "ISC",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.16",
+    "request": "^2.88.0"
+  }
+}

@@ -1,9 +1,9 @@
-var request = require('request');
-var blessed = require('blessed');
-var contrib = require('blessed-contrib');
-var screen = blessed.screen();
+const request = require('request');
+const blessed = require('blessed');
+const contrib = require('blessed-contrib');
+const screen = blessed.screen();
 
-var table = contrib.table({ 
+const table = contrib.table({ 
   keys: true, 
   vi: true, 
   fg: 'white',
@@ -18,17 +18,18 @@ var table = contrib.table({
 table.focus()
 screen.append(table)
 
-var options = {
-  url: 'http://monrer.fr/json?s=SCD',
+const options = {
+  url: 'http://monrer.fr/json?s=PSL',
   headers: {
     "Host": "monrer.fr",
-    "Referer": "http://monrer.fr/?s=SCD",
+    "Referer": "http://monrer.fr/?s=PSL",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; ) Gecko/20100101 Firefox/68.0"
   }
 };
 
 function onData(err, resp, body) {
-  if (resp.statusCode != 200) return console.log(err);
+  if (err) return; // console.log(err);
+  if (resp.statusCode != 200) return; // console.log(resp);
 
   try {
     var data = JSON.parse(body);
@@ -36,7 +37,7 @@ function onData(err, resp, body) {
   }
 
   catch(e) {
-    console.log(e)
+    // console.log(e)
   }
        
 }
@@ -48,8 +49,8 @@ function updateDisplay(data) {
       train.time,
       train.retard.replace("à l'heure", ""),
       train.ligne,
-      train.destination,
-      train.dessertes.replace(/\&bull;/g, "-").trim()
+      train.destination
+//      train.dessertes.replace(/\&bull;/g, "-").trim()
     ]
   })
   
@@ -66,7 +67,7 @@ function updateDisplay(data) {
   }, []);*/
 
   table.setData({
-    headers: ['Code', 'Heure', 'Retard', 'Ligne', 'Destination', 'Desserte'],
+    headers: ['Code', 'Heure', 'Retard', 'Ligne', 'Destination'],
     data: arrayData
   })
 
@@ -78,7 +79,7 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 });
 
 screen.render()
-setInterval(function() {
+setInterval(() => {
   request(options, onData);
 }, 30000);
 
